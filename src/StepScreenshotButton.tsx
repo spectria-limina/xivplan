@@ -4,8 +4,10 @@ import {
     type MenuButtonProps,
     type MenuCheckedValueChangeData,
     type MenuCheckedValueChangeEvent,
+    MenuDivider,
     MenuGroup,
     MenuGroupHeader,
+    MenuItem,
     MenuItemRadio,
     MenuList,
     MenuPopover,
@@ -41,6 +43,8 @@ export const StepScreenshotButton: React.FC<StepScreenshotButtonProps> = (props)
     const [takingScreenshot, setTakingScreenshot] = useState(false);
     const { dispatchToast } = useToastController();
     const cancelConnectionSelection = useCancelConnectionSelection();
+    const actionRef = useRef<'clipboard' | 'window'>('clipboard');
+    const pendingWindowRef = useRef<Window | null>(null);
 
     const checkedValues: Record<string, string[]> = {
         scale: [scale?.toString() ?? '1'],
@@ -52,12 +56,28 @@ export const StepScreenshotButton: React.FC<StepScreenshotButtonProps> = (props)
         }
     };
 
+    const handleImageReady = useCallback(
+        async (stage: Konva.Stage) => {
+            if (actionRef.current === 'window') {
+                const blob = (await stage.toBlob({ mimeType: 'image/png', pixelRatio: scale ?? 1 })) as Blob;
+                const url = URL.createObjectURL(blob);
+                if (pendingWindowRef.current) {
+                    pendingWindowRef.current.location.href = url;
+                }
+            } else {
+                await copyToClipboard(stage, scale);
+            }
+        },
+        [scale],
+    );
+
     const handleScreenshotDone = (error?: unknown) => {
         setTakingScreenshot(false);
+        pendingWindowRef.current = null;
 
         if (error) {
             dispatchToast(<MessageToast title="Error" message={error} />, { intent: 'error' });
-        } else {
+        } else if (actionRef.current === 'clipboard') {
             dispatchToast(<ScreenshotSuccessToast />, { intent: 'success', timeout: 2000 });
         }
     };
@@ -76,6 +96,15 @@ export const StepScreenshotButton: React.FC<StepScreenshotButtonProps> = (props)
 
     const startScreenshot = () => {
         cancelConnectionSelection();
+        actionRef.current = 'clipboard';
+        setTakingScreenshot(true);
+        startTimeout();
+    };
+
+    const startOpenInWindow = () => {
+        cancelConnectionSelection();
+        actionRef.current = 'window';
+        pendingWindowRef.current = window.open('', '_blank');
         setTakingScreenshot(true);
         startTimeout();
     };
@@ -85,6 +114,7 @@ export const StepScreenshotButton: React.FC<StepScreenshotButtonProps> = (props)
         { category: '7.Steps', help: 'Screenshot current step' },
         (ev) => {
             cancelConnectionSelection();
+            actionRef.current = 'clipboard';
             setTakingScreenshot(true);
             ev.preventDefault();
         },
@@ -123,13 +153,17 @@ export const StepScreenshotButton: React.FC<StepScreenshotButtonProps> = (props)
                                 4X
                             </MenuItemRadio>
                         </MenuGroup>
+                        <MenuDivider />
+                        <MenuItem onClick={startOpenInWindow} disabled={takingScreenshot}>
+                            Open in new tab
+                        </MenuItem>
                     </MenuList>
                 </MenuPopover>
             </Menu>
             {takingScreenshot && (
                 <Portal mountNode={{ className: classes.screenshot }}>
                     <ObjectLoadingProvider>
-                        <ScreenshotComponent scale={scale} onScreenshotDone={handleScreenshotDone} />
+                        <ScreenshotComponent onImageReady={handleImageReady} onScreenshotDone={handleScreenshotDone} />
                     </ObjectLoadingProvider>
                 </Portal>
             )}
@@ -146,11 +180,11 @@ const ScreenshotSuccessToast = () => {
 };
 
 interface ScreenshotComponentProps {
-    scale?: number;
+    onImageReady: (stage: Konva.Stage) => Promise<void>;
     onScreenshotDone: (error?: unknown) => void;
 }
 
-const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({ scale, onScreenshotDone }) => {
+const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({ onImageReady, onScreenshotDone }) => {
     const { isLoading } = use(ObjectLoadingContext);
     const { scene, stepIndex } = useScene();
     const [frozenScene] = useState(scene);
@@ -165,12 +199,12 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({ scale, onScre
         }
 
         try {
-            await copyToClipboard(ref.current, scale);
+            await onImageReady(ref.current);
             onScreenshotDone();
         } catch (ex) {
             onScreenshotDone(ex);
         }
-    }, [scale, onScreenshotDone]);
+    }, [onImageReady, onScreenshotDone]);
 
     // Delay screenshot by at least one render to make sure any objects that need
     // to load resources have reported that they are loading.
