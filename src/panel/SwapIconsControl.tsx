@@ -76,6 +76,12 @@ const SWAP_LIGHT_PARTIES = makeIconSwaps({
     [Job.RoleMagicRanged]: Job.RolePhysicalRanged,
 });
 
+const SWAP_SPICE_BOIZ = makeIconSwaps({
+    [Job.RoleTank1]: Job.RoleHealer1,
+    [Job.RoleTank2]: Job.RoleTank1,
+    [Job.RoleHealer1]: Job.RoleTank2,
+});
+
 function jobIcon(job: Job) {
     const { icon, name } = getJob(job);
     return <Image key={job} src={getJobIconUrl(icon)} title={name} width={24} height={24} draggable={false} />;
@@ -136,6 +142,7 @@ const SwapButton: React.FC<SwapButtonProps> = ({ swaps, left, right }) => {
 };
 
 export const SwapIconsControl: React.FC = () => {
+    const { dispatch, step, scene } = useScene();
     const [allSteps, setAllSteps] = useState(false);
     const classes = useStyles();
 
@@ -168,6 +175,9 @@ export const SwapIconsControl: React.FC = () => {
                     left={[Job.RoleTank1, Job.RoleHealer1, Job.RoleDps1]}
                     right={[Job.RoleTank2, Job.RoleHealer2, Job.RoleDps2]}
                 />
+                <Button className={classes.button} onClick={() => swapIcons(dispatch, scene, step, SWAP_SPICE_BOIZ, allSteps)}>
+                    Spice Boiz Special
+                </Button>
                 <Switch label="Apply to all steps" checked={allSteps} onChange={(_, data) => setAllSteps(data.checked)} />
             </div>
         </AllStepsToggleContext>
