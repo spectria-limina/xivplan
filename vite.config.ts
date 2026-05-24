@@ -52,8 +52,8 @@ export default defineConfig(({ mode }) => ({
             injectRegister: false,
             pwaAssets: { disabled: false, config: true, htmlPreset: '2023', overrideManifestIcons: true },
             manifest: {
-                name: 'XIVPlan',
-                short_name: 'XIVPlan',
+                name: 'Spice Boiz!XIVPlan',
+                short_name: 'SBPlan',
                 description: 'FFXIV raid planner',
                 display: 'standalone',
                 theme_color: '#1e1e1e',

@@ -75,7 +75,7 @@ export const SiteHeader: React.FC<HTMLAttributes<HTMLElement>> = ({ className, .
         <header className={mergeClasses(classes.root, className)} {...props}>
             <div className={classes.title}>
                 <Text size={titleSize} weight="semibold">
-                    XIVPlan
+                    SBPlan
                 </Text>
                 {source && <SourceIndicator source={source} />}
             </div>

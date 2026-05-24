@@ -31,8 +31,9 @@ export const AboutDialog: React.FC<AboutDialogProps> = (props) => {
                     <DialogTitle>About</DialogTitle>
                     <DialogContent className={classes.content}>
                         <p>
-                            XIVPlan is a tool for quickly diagramming raid strategies for Final Fantasy XIV, inspired by{' '}
-                            <ExternalLink href="https://raidplan.io">RaidPlan.io</ExternalLink> and{' '}
+                            SBPlan is variant of XIVPlan, a tool for quickly diagramming raid strategies for Final
+                            Fantasy XIV, inspired by <ExternalLink href="https://raidplan.io">RaidPlan.io</ExternalLink>{' '}
+                            and{' '}
                             <ExternalLink href="https://ff14.toolboxgaming.space">
                                 FF14 Toolbox Gaming Space
                             </ExternalLink>
