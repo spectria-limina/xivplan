@@ -1,6 +1,8 @@
 import { use } from 'react';
 import {
     DragSelectionContext,
+    DragSelectPreviewContext,
+    type DragSelectPreviewState,
     type SceneSelection,
     SelectionContext,
     type SelectionState,
@@ -27,6 +29,14 @@ export function useSpotlight(): SelectionState {
  */
 export function useDragSelection(): SelectionState {
     return use(DragSelectionContext);
+}
+
+/**
+ * State for the drag select preview. When non-null, a drag select is in
+ * progress and rendering should treat this set as the active selection.
+ */
+export function useDragSelectPreview(): DragSelectPreviewState {
+    return use(DragSelectPreviewContext);
 }
 
 /**

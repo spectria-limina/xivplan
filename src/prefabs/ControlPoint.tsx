@@ -125,6 +125,7 @@ export function createControlPointManager<T extends Vector2d, S, P = unknown>(
         const getTransformStart = (i: number) => {
             return (e: KonvaEventObject<Event>) => {
                 e.evt.stopPropagation();
+                e.cancelBubble = true; // prevent Konva-stage drag select from starting
 
                 const pointerPos = getPointerPos();
                 const handleCornerOffset = e.target.getRelativePointerPosition() ?? { x: 0, y: 0 };

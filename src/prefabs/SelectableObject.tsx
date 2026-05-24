@@ -3,6 +3,7 @@ import React, { type PropsWithChildren } from 'react';
 import { Group } from 'react-konva';
 import { useIsAllowedConnectionTarget, useUpdateConnectedIdsAction } from '../connections';
 import { EditMode } from '../editMode';
+import { OBJECT_GROUP_NAME, getObjectGroupId } from '../objectIds';
 import { isMoveable, type SceneObject } from '../scene';
 import { useScene } from '../SceneProvider';
 import {
@@ -62,7 +63,13 @@ export const SelectableObject: React.FC<SelectableObjectProps> = ({ object, chil
     };
 
     return (
-        <Group onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={isSelectable ? onClick : undefined}>
+        <Group
+            id={getObjectGroupId(object.id)}
+            name={OBJECT_GROUP_NAME}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={isSelectable ? onClick : undefined}
+        >
             {children}
         </Group>
     );

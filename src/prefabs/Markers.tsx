@@ -27,8 +27,11 @@ import { useHighlightProps, useOverrideProps } from './highlight';
 // https://github.com/ArnaudBarre/eslint-plugin-react-refresh/issues/103
 /* eslint-disable react-refresh/only-export-components */
 
-const DEFAULT_SIZE = 42;
-const ICON_RATIO = 32 / DEFAULT_SIZE;
+// 2.3 and 2.5y respectively, but rounded up.
+const DEFAULT_SIZE_SQUARE = 34;
+const DEFAULT_SIZE_CIRCLE = 38;
+const ICON_RATIO_SQUARE = 32 / DEFAULT_SIZE_SQUARE;
+const ICON_RATIO_CIRCLE = 32 / DEFAULT_SIZE_CIRCLE;
 
 function makeIcon(name: string, icon: string, shape: 'circle' | 'square', color: string) {
     const Component: React.FC = () => {
@@ -60,6 +63,7 @@ function makeIcon(name: string, icon: string, shape: 'circle' | 'square', color:
 }
 
 registerDropHandler<MarkerObject>(ObjectType.Marker, (object, position) => {
+    const size = object.shape === 'square' ? DEFAULT_SIZE_SQUARE : DEFAULT_SIZE_CIRCLE;
     return {
         type: 'add',
         object: {
@@ -69,8 +73,8 @@ registerDropHandler<MarkerObject>(ObjectType.Marker, (object, position) => {
             shape: 'square',
             color: COLOR_MARKER_RED,
             opacity: DEFAULT_MARKER_OPACITY,
-            width: DEFAULT_SIZE,
-            height: DEFAULT_SIZE,
+            width: size,
+            height: size,
             rotation: 0,
             ...object,
             ...position,
@@ -182,8 +186,9 @@ const MarkerRenderer: React.FC<RendererProps<MarkerObject>> = ({ object }) => {
     const overrideProps = useOverrideProps(object);
     const [image] = useImageTracked(object.image);
 
-    const iconWidth = object.width * ICON_RATIO;
-    const iconHeight = object.height * ICON_RATIO;
+    const iconRatio = object.shape === 'square' ? ICON_RATIO_SQUARE : ICON_RATIO_CIRCLE;
+    const iconWidth = object.width * iconRatio;
+    const iconHeight = object.height * iconRatio;
     const iconX = (object.width - iconWidth) / 2;
     const iconY = (object.height - iconHeight) / 2;
 

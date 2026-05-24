@@ -27,3 +27,16 @@ export const SpotlightContext = createContext<SelectionState>([new Set(), () => 
  * middle of a drag doesn't break anything.
  */
 export const DragSelectionContext = createContext<SelectionState>([new Set(), () => undefined]);
+
+/**
+ * The previewed selection during a drag-select.
+ *
+ * When `null`, no drag select is in progress and the actual selection is shown
+ * normally. When a Set, the drag select is active and the preview should fully
+ * override the displayed selection — objects in the set highlight as selected,
+ * objects outside it appear unselected even if they are in the real selection.
+ * The real selection is not updated until the drag releases.
+ */
+export type DragSelectPreviewState = [ReadonlySet<number> | null, Dispatch<SetStateAction<ReadonlySet<number> | null>>];
+
+export const DragSelectPreviewContext = createContext<DragSelectPreviewState>([null, () => undefined]);

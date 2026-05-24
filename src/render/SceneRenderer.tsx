@@ -16,6 +16,8 @@ import { useEditMode } from '../useEditMode';
 import { usePanelDrag } from '../usePanelDrag';
 import { ArenaRenderer } from './ArenaRenderer';
 import { DrawTarget } from './DrawTarget';
+import { dragSelectJustCommitted } from './dragSelect';
+import { DragSelector } from './DragSelector';
 import { ObjectRenderer } from './ObjectRenderer';
 import { StageContext } from './StageContext';
 import { TetherEditRenderer } from './TetherEditRenderer';
@@ -33,6 +35,10 @@ export const SceneRenderer: React.FC = () => {
         // current selection to better keep the visuals of which objects are going to
         // get connected.
         if (editMode === EditMode.SelectConnection) {
+            return;
+        }
+        // A drag-select fires a stage click on release — don't clear the result.
+        if (dragSelectJustCommitted()) {
             return;
         }
         // Clicking on nothing (with no modifier keys held) should cancel selection.
@@ -161,6 +167,7 @@ const SceneContents: React.FC<SceneContentsProps> = ({ listening, simple, backgr
                 <DrawTarget />
             </Layer>
             <Layer name={LayerName.Controls} listening={listening} />
+            {listening && <DragSelector />}
         </>
     );
 };
