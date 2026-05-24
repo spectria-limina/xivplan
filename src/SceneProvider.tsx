@@ -94,6 +94,11 @@ export interface ObjectUpdateAction {
     value: SceneObject | readonly SceneObject[];
 }
 
+export interface ObjectUpdateAllStepsAction {
+    type: 'updateAllSteps';
+    value: SceneObject | readonly SceneObject[];
+}
+
 /**
  * Action which applies the given transformation to objects with the given ID(s).
  */
@@ -132,6 +137,7 @@ export type ObjectAction =
     | ObjectMoveAction
     | GroupMoveAction
     | ObjectUpdateAction
+    | ObjectUpdateAllStepsAction
     | ObjectTransformAction;
 
 export interface SetStepAction {
@@ -632,6 +638,20 @@ function updateObjects(state: Readonly<EditorState>, values: readonly SceneObjec
     return updateCurrentStep(state, { objects });
 }
 
+function updateObjectsAllSteps(state: Readonly<EditorState>, values: readonly SceneObject[]): EditorState {
+    const steps = state.scene.steps.map((step) => {
+        const objects = step.objects.slice();
+        for (const update of values) {
+            const index = objects.findIndex((o) => o.id === update.id);
+            if (index >= 0) {
+                objects[index] = update;
+            }
+        }
+        return { ...step, objects };
+    });
+    return { ...state, scene: { ...state.scene, steps } };
+}
+
 function updateArena(state: Readonly<EditorState>, arena: Arena): EditorState {
     return {
         scene: { ...state.scene, arena },
@@ -724,6 +744,9 @@ function sceneReducer(state: Readonly<EditorState>, action: SceneAction): Editor
                     .filter((obj) => obj !== undefined)
                     .map((obj) => action.transformFn(obj, state.scene)),
             );
+
+        case 'updateAllSteps':
+            return updateObjectsAllSteps(state, asArray(action.value));
     }
 
     return state;
