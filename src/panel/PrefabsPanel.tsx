@@ -170,14 +170,6 @@ export const PrefabsPanel: React.FC = () => {
                     </ObjectGroup>
 
                     <ObjectGroup>
-                        <PartyDps1 />
-                        <PartyDps2 />
-                        <PartyDps3 />
-                        <PartyDps4 />
-                        <PartyDps />
-                    </ObjectGroup>
-
-                    <ObjectGroup>
                         <PartyMelee1 />
                         <PartyMelee2 />
                         <PartyMelee />
@@ -189,6 +181,14 @@ export const PrefabsPanel: React.FC = () => {
                         <PartyRanged1 />
                         <PartyRanged2 />
                         <PartyRanged />
+                    </ObjectGroup>
+
+                    <ObjectGroup>
+                        <PartyDps1 />
+                        <PartyDps2 />
+                        <PartyDps3 />
+                        <PartyDps4 />
+                        <PartyDps />
                     </ObjectGroup>
                 </TabActivity>
                 <TabActivity value="jobs" activeTab={tab}>

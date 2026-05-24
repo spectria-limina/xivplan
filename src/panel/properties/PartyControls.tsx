@@ -15,9 +15,9 @@ const ROLE_ICON_CHOICES = jobGrid([
     [Job.RoleAny, Job.RoleSupport],
     [Job.RoleTank, Job.RoleTank1, Job.RoleTank2],
     [Job.RoleHealer, Job.RoleHealer1, Job.RoleHealer2, Job.RolePureHealer, Job.RoleBarrierHealer],
-    [Job.RoleDps, Job.RoleDps1, Job.RoleDps2, Job.RoleDps3, Job.RoleDps4],
     [Job.RoleMelee, Job.RoleMelee1, Job.RoleMelee2],
     [Job.RoleRanged, Job.RoleRanged1, Job.RoleRanged2, Job.RolePhysicalRanged, Job.RoleMagicRanged],
+    [Job.RoleDps, Job.RoleDps1, Job.RoleDps2, Job.RoleDps3, Job.RoleDps4],
 ]);
 
 const JOB_ICON_CHOICES = jobGrid([
