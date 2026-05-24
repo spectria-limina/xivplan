@@ -12,6 +12,7 @@ import React from 'react';
 import { useScene } from '../SceneProvider';
 import { Segment, SegmentedGroup } from '../Segmented';
 import { SpinButton } from '../SpinButton';
+import { DEFAULT_PIXELS_PER_YALM } from '../LengthUnitContext';
 import { useSpinChanged } from '../prefabs/useSpinChanged';
 import { ArenaShape } from '../scene';
 import { useControlStyles } from '../useControlStyles';
@@ -23,11 +24,14 @@ const BorderNoneIcon = bundleIcon(BorderNoneFilled, BorderNoneRegular);
 export const ArenaShapeEdit: React.FC = () => {
     const classes = useControlStyles();
     const { scene, dispatch } = useScene();
-    const { shape, width, height, padding } = scene.arena;
+    const { shape, width, height, padding, pixelsPerYalm = DEFAULT_PIXELS_PER_YALM } = scene.arena;
 
     const onWidthChanged = useSpinChanged((value) => dispatch({ type: 'arenaWidth', value }));
     const onHeightChanged = useSpinChanged((value) => dispatch({ type: 'arenaHeight', value }));
     const onPaddingChanged = useSpinChanged((value) => dispatch({ type: 'arenaPadding', value }));
+    const onPixelsPerYalmChanged = useSpinChanged((value) =>
+        dispatch({ type: 'arena', value: { ...scene.arena, pixelsPerYalm: value } }),
+    );
 
     return (
         <div className={classes.column}>
@@ -53,6 +57,11 @@ export const ArenaShapeEdit: React.FC = () => {
                 </Field>
                 <Field label="Height">
                     <SpinButton min={50} max={2000} step={50} value={height} onChange={onHeightChanged} />
+                </Field>
+            </div>
+            <div className={classes.row}>
+                <Field label="Pixels/yalm" className={classes.cell}>
+                    <SpinButton min={1} max={100} step={1} value={pixelsPerYalm} onChange={onPixelsPerYalmChanged} />
                 </Field>
             </div>
         </div>

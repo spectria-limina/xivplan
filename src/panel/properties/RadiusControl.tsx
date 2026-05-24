@@ -1,6 +1,5 @@
-import { Field } from '@fluentui/react-components';
 import React from 'react';
-import { SpinButton } from '../../SpinButton';
+import { LengthField } from '../../LengthField';
 import { useSpinChanged } from '../../prefabs/useSpinChanged';
 import { type InnerRadiusObject, type RadiusObject, isInnerRadiusObject } from '../../scene';
 import { useControlStyles } from '../../useControlStyles';
@@ -20,9 +19,14 @@ export const RadiusControl: React.FC<PropertiesControlProps<RadiusObject>> = ({ 
     const label = hasInnerRadius ? 'Radius 1' : 'Radius';
 
     return (
-        <Field label={label} className={classes.cell}>
-            <SpinButton value={radius} onChange={onRadiusChanged} min={10} step={5} />
-        </Field>
+        <LengthField
+            label={label}
+            className={classes.cell}
+            value={radius}
+            onChange={onRadiusChanged}
+            min={10}
+            step={5}
+        />
     );
 };
 
@@ -35,8 +39,13 @@ export const InnerRadiusControl: React.FC<PropertiesControlProps<InnerRadiusObje
     const onInnerRadiusChanged = useSpinChanged((innerRadius: number) => update({ props: { innerRadius } }));
 
     return (
-        <Field label="Radius 2" className={classes.cell}>
-            <SpinButton value={innerRadius} onChange={onInnerRadiusChanged} min={10} step={5} />
-        </Field>
+        <LengthField
+            label="Radius 2"
+            className={classes.cell}
+            value={innerRadius}
+            onChange={onInnerRadiusChanged}
+            min={10}
+            step={5}
+        />
     );
 };

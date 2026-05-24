@@ -10,6 +10,7 @@ import { MainPage } from './MainPage';
 import { SceneProvider } from './SceneProvider';
 import { SiteHeader } from './SiteHeader';
 import { ThemeProvider } from './ThemeProvider';
+import { LengthUnitProvider } from './LengthUnitProvider';
 import { useFileLoaderDropTarget } from './useFileLoader';
 import { HotkeyScopes } from './useHotkeys';
 
@@ -76,11 +77,13 @@ const LoadingFallback: React.FC = () => {
 const Layout: React.FC = () => {
     return (
         <ThemeProvider>
-            <Suspense fallback={<LoadingFallback />}>
-                <BaseProviders>
-                    <Root />
-                </BaseProviders>
-            </Suspense>
+            <LengthUnitProvider>
+                <Suspense fallback={<LoadingFallback />}>
+                    <BaseProviders>
+                        <Root />
+                    </BaseProviders>
+                </Suspense>
+            </LengthUnitProvider>
         </ThemeProvider>
     );
 };
