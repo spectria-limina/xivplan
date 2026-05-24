@@ -1,8 +1,8 @@
-import { Field, ToggleButton, Tooltip } from '@fluentui/react-components';
+import { ToggleButton, Tooltip } from '@fluentui/react-components';
 import { LinkRegular, LockClosedRegular, LockMultipleRegular, LockOpenRegular } from '@fluentui/react-icons';
 import React from 'react';
 import { ConnectionType } from '../../EditModeContext';
-import { SpinButton } from '../../SpinButton';
+import { LengthField } from '../../LengthField';
 import type { MoveableObject } from '../../scene';
 import { useControlStyles } from '../../useControlStyles';
 import { setOrOmitAction, useObjectUpdater } from '../../useObjectUpdater';
@@ -30,12 +30,16 @@ export const PositionControl: React.FC<PropertiesControlProps<MoveableObject>> =
     return (
         <>
             <div className={classes.row}>
-                <Field label={<PositionLabel coordinate="X" currentlyLinked={currentlyLinked} />}>
-                    <SpinButton value={x} onValueChange={onXChanged} step={1} />
-                </Field>
-                <Field label={<PositionLabel coordinate="Y" currentlyLinked={currentlyLinked} />}>
-                    <SpinButton value={y} onValueChange={onYChanged} step={1} />
-                </Field>
+                <LengthField
+                    label={<PositionLabel coordinate="X" currentlyLinked={currentlyLinked} />}
+                    value={x}
+                    onValueChange={onXChanged}
+                />
+                <LengthField
+                    label={<PositionLabel coordinate="Y" currentlyLinked={currentlyLinked} />}
+                    value={y}
+                    onValueChange={onYChanged}
+                />
                 <Tooltip content={tooltip} relationship="label" withArrow>
                     <ToggleButton checked={pinned || false} onClick={onTogglePinned} icon={icon} />
                 </Tooltip>

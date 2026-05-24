@@ -1,7 +1,7 @@
-import { Field, mergeClasses } from '@fluentui/react-components';
+import { mergeClasses } from '@fluentui/react-components';
+import { LengthField } from '../../LengthField';
 import { MIN_LINE_LENGTH, MIN_LINE_WIDTH } from '../../prefabs/bounds';
 import type { LineZone } from '../../scene';
-import { SpinButton } from '../../SpinButton';
 import { useControlStyles } from '../../useControlStyles';
 import { useObjectUpdater } from '../../useObjectUpdater';
 import { commonValue } from '../../util';
@@ -19,12 +19,8 @@ export const LineSizeControl: React.FC<PropertiesControlProps<LineZone>> = ({ ob
 
     return (
         <div className={mergeClasses(classes.row, classes.rightGap)}>
-            <Field label="Width">
-                <SpinButton value={width} onValueChange={onWidthChanged} min={MIN_LINE_WIDTH} step={5} />
-            </Field>
-            <Field label="Length">
-                <SpinButton value={length} onValueChange={onLengthChanged} min={MIN_LINE_LENGTH} step={5} />
-            </Field>
+            <LengthField label="Width" value={width} onValueChange={onWidthChanged} min={MIN_LINE_WIDTH} step={5} />
+            <LengthField label="Length" value={length} onValueChange={onLengthChanged} min={MIN_LINE_LENGTH} step={5} />
         </div>
     );
 };

@@ -75,6 +75,11 @@ export interface SetArenaBackgroundOpacityAction {
     value: number;
 }
 
+export interface SetArenaLengthScaleAction {
+    type: 'arenaLengthScale';
+    value: number;
+}
+
 export type ArenaAction =
     | SetArenaAction
     | SetArenaShapeAction
@@ -84,7 +89,8 @@ export type ArenaAction =
     | SetArenaGridAction
     | SetArenaTicksActions
     | SetArenaBackgroundAction
-    | SetArenaBackgroundOpacityAction;
+    | SetArenaBackgroundOpacityAction
+    | SetArenaLengthScaleAction;
 
 /**
  * Action which replaces existing objects with the given ones. Objects to replace are matched by ID.

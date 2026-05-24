@@ -135,6 +135,7 @@ export interface Arena {
     readonly ticks?: Ticks;
     readonly backgroundImage?: string;
     readonly backgroundOpacity?: number;
+    readonly lengthScale?: number;
 }
 
 export interface ArenaPreset {

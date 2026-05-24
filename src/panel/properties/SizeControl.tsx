@@ -1,6 +1,6 @@
-import { Field, mergeClasses } from '@fluentui/react-components';
+import { mergeClasses } from '@fluentui/react-components';
 import React from 'react';
-import { SpinButton } from '../../SpinButton';
+import { LengthField } from '../../LengthField';
 import { MIN_SIZE } from '../../prefabs/bounds';
 import type { ResizeableObject } from '../../scene';
 import { useControlStyles } from '../../useControlStyles';
@@ -20,12 +20,8 @@ export const SizeControl: React.FC<PropertiesControlProps<ResizeableObject>> = (
 
     return (
         <div className={mergeClasses(classes.row, classes.rightGap)}>
-            <Field label="Width">
-                <SpinButton value={width} onValueChange={onWidthChanged} min={MIN_SIZE} step={5} />
-            </Field>
-            <Field label="Height">
-                <SpinButton value={height} onValueChange={onHeightChanged} min={MIN_SIZE} step={5} />
-            </Field>
+            <LengthField label="Width" value={width} onValueChange={onWidthChanged} min={MIN_SIZE} step={5} />
+            <LengthField label="Height" value={height} onValueChange={onHeightChanged} min={MIN_SIZE} step={5} />
         </div>
     );
 };
